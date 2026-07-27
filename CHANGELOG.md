@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added GNOME desktop recovery collection.
+- Added dconf, extension, theme, icon and font preservation.
+- Added configured wallpaper and selected desktop configuration capture.
+- Added GNOME desktop integrity tests.
 - Added GNU GPL v3-only licensing and SPDX identifiers.
 - Added author attribution and public project websites.
 - Added GUI, TUI and CLI application inventory collection.
