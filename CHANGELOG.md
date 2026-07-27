@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Fixed GNOME extension summary counting.
+- Added integrated validation recovery-set generation.
+- Added top-level recovery-set integrity verification.
+- Added machine history and explicit implementation limitations.
 - Added GNOME desktop recovery collection.
 - Added dconf, extension, theme, icon and font preservation.
 - Added configured wallpaper and selected desktop configuration capture.

@@ -399,13 +399,13 @@ DESKTOP_NAME="${XDG_CURRENT_DESKTOP:-unknown}"
 GNOME_VERSION="$(gnome-shell --version 2>/dev/null || printf 'unknown')"
 
 ENABLED_EXTENSION_COUNT="$(
-    grep -cvE '^\s*$|^\[' \
+    grep -cvE '^[[:space:]]*$|^[[:space:]]*#|^[[:space:]]*\[' \
         "$OUTPUT_DIR/extensions/enabled.txt" \
         2>/dev/null || true
 )"
 
 ALL_EXTENSION_COUNT="$(
-    grep -cvE '^\s*$|^\[' \
+    grep -cvE '^[[:space:]]*$|^[[:space:]]*#|^[[:space:]]*\[' \
         "$OUTPUT_DIR/extensions/all.txt" \
         2>/dev/null || true
 )"

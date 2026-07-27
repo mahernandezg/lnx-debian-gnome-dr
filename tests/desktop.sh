@@ -55,6 +55,26 @@ grep -q "## Restore requirement" \
 grep -q "Manuel Alejandro Hernández Giuliani" \
     "$output_directory/DESKTOP.md"
 
+expected_enabled="$(
+    grep -cvE '^[[:space:]]*$|^[[:space:]]*#|^[[:space:]]*\[' \
+        "$output_directory/extensions/enabled.txt" || true
+)"
+
+reported_enabled="$(
+    awk -F'|' '
+        $2 ~ /Enabled GNOME extensions/ {
+            value=$3
+            gsub(/[[:space:]]/, "", value)
+            print value
+        }
+    ' "$output_directory/DESKTOP.md"
+)"
+
+[[ "$expected_enabled" == "$reported_enabled" ]] || {
+    echo "FAIL: enabled extension count mismatch"
+    exit 1
+}
+
 (
     cd "$output_directory"
     sha256sum --check SHA256SUMS >/dev/null
