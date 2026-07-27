@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Manuel Alejandro Hernández Giuliani
+
 set -Eeuo pipefail
 
 umask 077
@@ -93,6 +96,11 @@ fi
 : "${BACKUP_NETWORK_CONNECTIONS:=false}"
 : "${BACKUP_DOCKER_DATA:=false}"
 : "${ENCRYPT_SENSITIVE_DATA:=false}"
+: "${BACKUP_APPLICATION_MANIFESTS:=true}"
+: "${BACKUP_APPLICATION_CONFIG:=true}"
+: "${BACKUP_PORTABLE_APPLICATIONS:=true}"
+: "${BACKUP_EXTERNAL_INSTALLERS:=true}"
+: "${MAX_PORTABLE_FILE_SIZE_MIB:=2048}"
 
 TOOLKIT_VERSION="unknown"
 if [[ -r "$VERSION_FILE" ]]; then
@@ -241,11 +249,16 @@ printf '  README.md\n'
 printf '  MANIFEST.md\n'
 printf '  HISTORY.md\n'
 printf '  inventory.txt\n'
-printf '  packages/\n'
-printf '    dpkg-packages.tsv\n'
-printf '    apt-manual.txt\n'
-printf '    flatpak-applications.tsv\n'
-printf '    snap-packages.txt\n'
+printf '  applications/\n'
+printf '    APPLICATIONS.md\n'
+printf '    SHA256SUMS\n'
+printf '    apt/\n'
+printf '    flatpak/\n'
+printf '    snap/\n'
+printf '    portable/\n'
+printf '    local-binaries/\n'
+printf '    desktop-launchers/\n'
+printf '    language-tools/\n'
 printf '  desktop/\n'
 printf '    dconf.ini\n'
 printf '    gnome-extensions.txt\n'
@@ -293,6 +306,29 @@ printf '%s\n' \
     "  - terminal configuration" \
     "  - selected application configuration under ~/.config" \
     "  - SSH client configuration without private keys by default"
+
+
+printf '\nPlanned application recovery\n'
+printf '%s\n' "----------------------------"
+printf '%s\n' \
+    "  - Debian and external APT applications" \
+    "  - Flatpak applications, runtimes, remotes and overrides" \
+    "  - Snap applications" \
+    "  - GUI desktop launchers" \
+    "  - TUI and CLI commands" \
+    "  - AppImage and portable applications" \
+    "  - executables under ~/.local/bin and /usr/local" \
+    "  - pip, pipx and uv tools" \
+    "  - npm and pnpm global tools" \
+    "  - Cargo, rustup and Go tools" \
+    "  - mise, asdf and Homebrew tools" \
+    "  - selected application configuration"
+
+printf 'Application manifests:     %s\n' "$BACKUP_APPLICATION_MANIFESTS"
+printf 'Application configuration: %s\n' "$BACKUP_APPLICATION_CONFIG"
+printf 'Portable applications:     %s\n' "$BACKUP_PORTABLE_APPLICATIONS"
+printf 'External installers:       %s\n' "$BACKUP_EXTERNAL_INSTALLERS"
+printf 'Maximum portable file:     %s MiB\n' "$MAX_PORTABLE_FILE_SIZE_MIB"
 
 printf '\nSensitive data policy\n'
 printf '%s\n' "---------------------"

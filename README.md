@@ -6,6 +6,16 @@ The project captures the operating-system configuration, installed
 software, desktop settings and technical inventory required to rebuild
 a workstation after a fresh Debian installation or hardware failure.
 
+
+## Author and websites
+
+Created and maintained by **Manuel Alejandro Hernández Giuliani**.
+
+- Personal website: [manuelhernandezgiuliani.com](https://manuelhernandezgiuliani.com)
+- The Data Professor: [thedataprofessor.com](https://thedataprofessor.com)
+- MAHG: [mahg.es](https://mahg.es)
+- GitHub: [github.com/mahernandezg](https://github.com/mahernandezg)
+
 ## Scope
 
 This project backs up:
@@ -55,3 +65,13 @@ restore procedures have been tested successfully.
 Personal project maintained by `mahernandezg`:
 
 `github.com/mahernandezg/lnx-debian-gnome-dr`
+
+## License
+
+Copyright (C) 2026 Manuel Alejandro Hernández Giuliani.
+
+This project is free software licensed under the
+**GNU General Public License version 3 only** (`GPL-3.0-only`).
+
+See [LICENSE](LICENSE) for the complete license text and
+[NOTICE.md](NOTICE.md) for attribution and project information.

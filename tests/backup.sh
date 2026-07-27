@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Manuel Alejandro Hernández Giuliani
+
 set -Eeuo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -45,6 +48,9 @@ grep -q "Retention count:      7 recovery sets" <<<"$dry_run_output"
 grep -q "README.md" <<<"$dry_run_output"
 grep -q "MANIFEST.md" <<<"$dry_run_output"
 grep -q "inventory.txt" <<<"$dry_run_output"
+grep -q "APPLICATIONS.md" <<<"$dry_run_output"
+grep -q "Planned application recovery" <<<"$dry_run_output"
+grep -q "Portable applications:" <<<"$dry_run_output"
 grep -q "configuration-" <<<"$dry_run_output"
 grep -q "SHA256SUMS" <<<"$dry_run_output"
 grep -q "Sensitive data policy" <<<"$dry_run_output"

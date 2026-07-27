@@ -16,6 +16,18 @@
 | Backup date | {{BACKUP_DATE}} |
 | Toolkit version | {{TOOLKIT_VERSION}} |
 
+
+## Project and author
+
+This recovery set was generated using `lnx-debian-gnome-dr`.
+
+- Author: Manuel Alejandro Hernández Giuliani
+- Personal website: https://manuelhernandezgiuliani.com
+- The Data Professor: https://thedataprofessor.com
+- MAHG: https://mahg.es
+- GitHub: https://github.com/mahernandezg
+- License: GNU GPL v3 only (`GPL-3.0-only`)
+
 ## Purpose
 
 This recovery set contains the operating-system configuration and

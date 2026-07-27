@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2026 Manuel Alejandro Hernández Giuliani
+
 set -Eeuo pipefail
 
 required_files=(
   README.md
+  tests/applications.sh
+  scripts/applications.sh
+  docs/application-recovery.md
+  NOTICE.md
+  LICENSE
   VERSION
   CHANGELOG.md
   config/default.conf

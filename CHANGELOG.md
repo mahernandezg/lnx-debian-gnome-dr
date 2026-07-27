@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added GNU GPL v3-only licensing and SPDX identifiers.
+- Added author attribution and public project websites.
+- Added GUI, TUI and CLI application inventory collection.
+- Added application inventory integrity verification.
+- Extended the backup plan for portable and package-managed applications.
 - Implemented a non-writing backup dry-run.
 - Added machine-specific recovery README rendering.
 - Added backup planning and safety-gate tests.
