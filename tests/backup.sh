@@ -108,6 +108,9 @@ grep -q "automated restore execution" \
 grep -q "GNU GENERAL PUBLIC LICENSE" \
     "$output_directory/LICENSE"
 
+grep -q "No recovery-set file will be modified after checksum generation." \
+    "$output_directory/logs/backup.log"
+
 (
     cd "$output_directory"
     sha256sum --check SHA256SUMS >/dev/null

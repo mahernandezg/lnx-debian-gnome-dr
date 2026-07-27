@@ -426,7 +426,8 @@ install -m 600 \
     "$PARTIAL_OUTPUT/NOTICE.md"
 
 log "All recovery components were generated."
-log "Generating top-level SHA-256 manifest."
+log "Generating and freezing the top-level SHA-256 manifest."
+log "No recovery-set file will be modified after checksum generation."
 
 (
     cd "$PARTIAL_OUTPUT"
@@ -441,12 +442,13 @@ log "Generating top-level SHA-256 manifest."
 
 chmod 600 "$PARTIAL_OUTPUT/SHA256SUMS"
 
-log "Verifying top-level SHA-256 manifest."
-
 (
     cd "$PARTIAL_OUTPUT"
     sha256sum --check SHA256SUMS >/dev/null
 )
+
+printf '%s\n' \
+    "Top-level SHA-256 manifest verified successfully."
 
 find "$PARTIAL_OUTPUT" -type d -exec chmod 700 {} +
 find "$PARTIAL_OUTPUT" -type f -exec chmod 600 {} +

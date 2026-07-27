@@ -75,3 +75,14 @@ This project is free software licensed under the
 
 See [LICENSE](LICENSE) for the complete license text and
 [NOTICE.md](NOTICE.md) for attribution and project information.
+
+## Testing
+
+Run the complete fail-fast test suite:
+
+    ./tests/all.sh
+
+The test runner stops immediately if any component fails. Do not commit,
+publish a tag or create a release unless the complete suite finishes with:
+
+    PASS: all project tests completed successfully

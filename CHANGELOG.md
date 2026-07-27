@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed integrated recovery-set checksum instability.
+- Prevented modification of recovery files after checksum generation.
+- Added a fail-fast complete test runner.
 - Fixed GNOME extension summary counting.
 - Added integrated validation recovery-set generation.
 - Added top-level recovery-set integrity verification.
