@@ -1,0 +1,8 @@
+[Unit]
+Description=Debian GNOME disaster recovery backup
+Documentation=https://github.com/mahernandezg/lnx-debian-gnome-dr
+ConditionACPower=true
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/lnx-debian-gnome-dr backup

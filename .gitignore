@@ -1,0 +1,13 @@
+*.log
+*.tmp
+*.tar
+*.tar.gz
+*.tar.zst
+*.sha256
+.cache/
+build/
+dist/
+coverage/
+backups/
+.env
+config/local.conf
