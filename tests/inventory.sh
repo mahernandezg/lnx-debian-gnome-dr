@@ -22,6 +22,10 @@ grep -q "# Debian GNOME Workstation Inventory" "$temporary_inventory"
 grep -q "## Operating system release" "$temporary_inventory"
 grep -q "## Kernel" "$temporary_inventory"
 grep -q "Read-only collection: yes" "$temporary_inventory"
+grep -q "Contains recovery-sensitive metadata: yes" "$temporary_inventory"
+grep -q "## Linux software RAID status" "$temporary_inventory"
+grep -q "## UEFI boot entries" "$temporary_inventory"
+grep -Eq '^bash(:[^[:space:]]+)?[[:space:]]' "$temporary_inventory"
 
 permissions="$(stat -c '%a' "$temporary_inventory")"
 [[ "$permissions" == "600" ]]

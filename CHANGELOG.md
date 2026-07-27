@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Fixed Debian package inventory formatting.
+- Added Linux software RAID and UEFI boot inventory.
+- Improved NVIDIA DRM modeset diagnostics.
+- Marked generated inventories as recovery-sensitive.
 - Implemented read-only workstation inventory collection.
 - Added inventory dry-run support and automated tests.
 - Created the initial repository structure.

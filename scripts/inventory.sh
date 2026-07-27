@@ -136,7 +136,8 @@ trap 'rm -f "$TEMP_FILE"' EXIT
     printf -- '- Effective user ID: %s\n' "$(id -u)"
     printf -- '- Hostname: %s\n' "$(hostname)"
     printf -- '- Read-only collection: yes\n'
-    printf -- '- Secrets requested: no\n'
+    printf -- '- Credentials and private keys requested: no\n'
+    printf -- '- Contains recovery-sensitive metadata: yes\n'
 
     run_command "Hostname and machine identity" hostnamectl
     run_command "Operating system release" cat /etc/os-release
@@ -170,12 +171,40 @@ trap 'rm -f "$TEMP_FILE"' EXIT
         "Block devices and filesystems" \
         lsblk -e 7 -o NAME,PATH,TYPE,SIZE,FSTYPE,FSVER,LABEL,UUID,MOUNTPOINTS,MODEL
 
+    run_command "Linux software RAID status" cat /proc/mdstat
+
+    if command -v mdadm >/dev/null 2>&1; then
+        run_command "Linux software RAID arrays" mdadm --detail --scan
+    else
+        section "Linux software RAID arrays"
+        echo "[SKIPPED] Command not installed: mdadm"
+    fi
+
     run_command \
         "Mounted filesystems" \
         findmnt --real -o TARGET,SOURCE,FSTYPE,OPTIONS
 
     run_command "Filesystem capacity" df -hT
     run_command "Static filesystem configuration" cat /etc/fstab
+
+    if command -v efibootmgr >/dev/null 2>&1; then
+        run_command "UEFI boot entries" efibootmgr -v
+    else
+        section "UEFI boot entries"
+        echo "[SKIPPED] Command not installed: efibootmgr"
+    fi
+
+    run_shell \
+        "Mounted EFI system partition contents" \
+        'if [[ -d /boot/efi/EFI ]]; then
+            find /boot/efi/EFI \
+                -maxdepth 4 \
+                -type f \
+                -printf "%P\n" \
+                | sort
+        else
+            echo "[UNAVAILABLE] /boot/efi/EFI is not mounted or does not exist."
+        fi'
 
     run_command "Network interfaces" ip -brief address
     run_command "Network routes" ip route
@@ -191,7 +220,7 @@ trap 'rm -f "$TEMP_FILE"' EXIT
 
     run_shell \
         "Debian package inventory" \
-        'dpkg-query -W -f="${binary:Package}\t${Version}\t${db:Status-Abbrev}\n" | sort'
+        'dpkg-query -W -f="\${binary:Package}\t\${Version}\t\${db:Status-Abbrev}\n" | sort'
 
     run_shell \
         "Manually installed Debian packages" \
@@ -262,11 +291,23 @@ trap 'rm -f "$TEMP_FILE"' EXIT
 
     run_shell \
         "NVIDIA DRM modeset" \
-        'if [[ -r /sys/module/nvidia_drm/parameters/modeset ]]; then
-            cat /sys/module/nvidia_drm/parameters/modeset
+        'parameter="/sys/module/nvidia_drm/parameters/modeset"
+
+        if [[ -e "$parameter" ]]; then
+            if cat "$parameter"; then
+                :
+            else
+                echo "[UNAVAILABLE] Parameter exists but could not be read."
+                ls -l "$parameter" 2>/dev/null || true
+            fi
+        elif grep -q "^nvidia_drm " /proc/modules 2>/dev/null; then
+            echo "[UNAVAILABLE] nvidia_drm is loaded but does not expose the parameter."
         else
-            echo "[UNAVAILABLE] nvidia_drm modeset parameter not found."
-        fi'
+            echo "[UNAVAILABLE] nvidia_drm module is not loaded."
+        fi
+
+        printf "Kernel command line: "
+        cat /proc/cmdline'
 
     if command -v mokutil >/dev/null 2>&1; then
         run_command "Secure Boot state" mokutil --sb-state
