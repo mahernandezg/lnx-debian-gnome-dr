@@ -6,6 +6,9 @@ set -Eeuo pipefail
 
 required_files=(
   README.md
+  docs/system-recovery.md
+  tests/system.sh
+  scripts/system.sh
   tests/all.sh
   tests/desktop.sh
   scripts/desktop.sh

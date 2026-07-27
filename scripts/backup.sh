@@ -16,6 +16,7 @@ README_TEMPLATE="${PROJECT_ROOT}/templates/machine-readme.md"
 INVENTORY_SCRIPT="${PROJECT_ROOT}/scripts/inventory.sh"
 APPLICATIONS_SCRIPT="${PROJECT_ROOT}/scripts/applications.sh"
 DESKTOP_SCRIPT="${PROJECT_ROOT}/scripts/desktop.sh"
+SYSTEM_SCRIPT="${PROJECT_ROOT}/scripts/system.sh"
 
 MODE=""
 OUTPUT_DIR=""
@@ -117,7 +118,8 @@ fi
 for script in \
     "$INVENTORY_SCRIPT" \
     "$APPLICATIONS_SCRIPT" \
-    "$DESKTOP_SCRIPT"
+    "$DESKTOP_SCRIPT" \
+    "$SYSTEM_SCRIPT"
 do
     [[ -x "$script" ]] || fail "required executable not found: $script"
 done
@@ -229,13 +231,14 @@ render_manifest() {
         '- `inventory.txt`: system and hardware inventory' \
         '- `applications/`: GUI, TUI and CLI application manifests' \
         '- `desktop/`: GNOME, extensions, themes, fonts and backgrounds' \
+        '- `system/`: selected Debian, GRUB, Wayland, NVIDIA, RAID and service configuration' \
         '- `LICENSE`: GNU GPL version 3' \
         '- `NOTICE.md`: project attribution' \
         '- `SHA256SUMS`: recovery-set integrity verification'
 
     printf '\n## Not yet included\n\n'
     printf '%s\n' \
-        '- selected privileged `/etc` configuration payload' \
+        '- privileged selected paths listed in `system/unreadable-paths.txt` when not collected as root' \
         '- encrypted SSH private keys or NetworkManager secrets' \
         '- physical copies of portable applications' \
         '- external application installers' \
@@ -322,6 +325,7 @@ print_plan() {
         '  inventory.txt' \
         '  applications/' \
         '  desktop/' \
+        '  system/' \
         '  LICENSE' \
         '  NOTICE.md' \
         '  logs/backup.log' \
@@ -412,6 +416,9 @@ log "Output: $FINAL_OUTPUT"
 
 "$DESKTOP_SCRIPT" \
     --output-dir "$PARTIAL_OUTPUT/desktop"
+
+"$SYSTEM_SCRIPT" \
+    --output-dir "$PARTIAL_OUTPUT/system"
 
 render_readme >"$PARTIAL_OUTPUT/README.md"
 render_manifest >"$PARTIAL_OUTPUT/MANIFEST.md"

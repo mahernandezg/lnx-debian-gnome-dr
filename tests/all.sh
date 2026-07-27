@@ -11,6 +11,7 @@ tests=(
     inventory.sh
     applications.sh
     desktop.sh
+    system.sh
     backup.sh
 )
 

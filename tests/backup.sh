@@ -52,6 +52,7 @@ grep -q "MODE: DRY RUN" <<<"$dry_run_output"
 grep -q "NO FILES WILL BE WRITTEN" <<<"$dry_run_output"
 grep -q "applications/" <<<"$dry_run_output"
 grep -q "desktop/" <<<"$dry_run_output"
+grep -q "system/" <<<"$dry_run_output"
 grep -q "MANIFEST.md" <<<"$dry_run_output"
 grep -q "SHA256SUMS" <<<"$dry_run_output"
 grep -q "DRY RUN COMPLETE" <<<"$dry_run_output"
@@ -87,6 +88,9 @@ required_files=(
     applications/APPLICATIONS.md
     applications/SHA256SUMS
     desktop/DESKTOP.md
+    system/SYSTEM.md
+    system/SHA256SUMS
+    system/commands/proc-cmdline.txt
     desktop/SHA256SUMS
     desktop/desktop/dconf.ini
     desktop/extensions/enabled.txt

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Added selected Debian system configuration recovery payload.
+- Added GRUB, GDM, Wayland, NVIDIA, RAID and UEFI collection.
+- Added systemd, APT, Docker, Caddy and SSH configuration capture.
+- Added explicit secret exclusions and privilege reporting.
+- Integrated system recovery into the validation recovery set.
 - Fixed integrated recovery-set checksum instability.
 - Prevented modification of recovery files after checksum generation.
 - Added a fail-fast complete test runner.
