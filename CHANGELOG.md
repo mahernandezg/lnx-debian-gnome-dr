@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed unsuccessful-command exit status reporting.
+- Added PARTUUID values for boot-device correlation.
+- Added privilege-aware RAID and EFI inventory messages.
 - Fixed Debian package inventory formatting.
 - Added Linux software RAID and UEFI boot inventory.
 - Improved NVIDIA DRM modeset diagnostics.

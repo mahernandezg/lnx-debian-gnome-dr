@@ -25,7 +25,13 @@ grep -q "Read-only collection: yes" "$temporary_inventory"
 grep -q "Contains recovery-sensitive metadata: yes" "$temporary_inventory"
 grep -q "## Linux software RAID status" "$temporary_inventory"
 grep -q "## UEFI boot entries" "$temporary_inventory"
+grep -q "PARTUUID" "$temporary_inventory"
 grep -Eq '^bash(:[^[:space:]]+)?[[:space:]]' "$temporary_inventory"
+
+if grep -q "exited with status 0" "$temporary_inventory"; then
+    echo "FAIL: unsuccessful commands must not report status 0"
+    exit 1
+fi
 
 permissions="$(stat -c '%a' "$temporary_inventory")"
 [[ "$permissions" == "600" ]]

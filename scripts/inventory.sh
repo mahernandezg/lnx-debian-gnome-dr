@@ -94,12 +94,13 @@ run_command() {
     printf ' %q' "$@"
     printf '\n\n'
 
-    if "$@" 2>&1; then
-        return 0
+    local status=0
+    "$@" 2>&1 || status=$?
+
+    if ((status != 0)); then
+        printf '\n[UNAVAILABLE] Command exited with status %s.\n' "$status"
     fi
 
-    local status=$?
-    printf '\n[UNAVAILABLE] Command exited with status %s.\n' "$status"
     return 0
 }
 
@@ -110,12 +111,13 @@ run_shell() {
     section "$title"
     printf '$ %s\n\n' "$command_text"
 
-    if bash -o pipefail -lc "$command_text" 2>&1; then
-        return 0
+    local status=0
+    bash -o pipefail -lc "$command_text" 2>&1 || status=$?
+
+    if ((status != 0)); then
+        printf '\n[UNAVAILABLE] Collection exited with status %s.\n' "$status"
     fi
 
-    local status=$?
-    printf '\n[UNAVAILABLE] Collection exited with status %s.\n' "$status"
     return 0
 }
 
@@ -169,15 +171,25 @@ trap 'rm -f "$TEMP_FILE"' EXIT
 
     run_command \
         "Block devices and filesystems" \
-        lsblk -e 7 -o NAME,PATH,TYPE,SIZE,FSTYPE,FSVER,LABEL,UUID,MOUNTPOINTS,MODEL
+        lsblk -e 7 -o NAME,PATH,TYPE,SIZE,FSTYPE,FSVER,LABEL,UUID,PARTUUID,MOUNTPOINTS,MODEL
 
     run_command "Linux software RAID status" cat /proc/mdstat
 
-    if command -v mdadm >/dev/null 2>&1; then
-        run_command "Linux software RAID arrays" mdadm --detail --scan
-    else
-        section "Linux software RAID arrays"
+    section "Linux software RAID arrays"
+
+    if ! command -v mdadm >/dev/null 2>&1; then
         echo "[SKIPPED] Command not installed: mdadm"
+    elif ((EUID != 0)); then
+        echo "[REQUIRES ROOT] Run the inventory as root to execute: mdadm --detail --scan"
+    else
+        printf '$ mdadm --detail --scan\n\n'
+
+        mdadm_status=0
+        mdadm --detail --scan 2>&1 || mdadm_status=$?
+
+        if ((mdadm_status != 0)); then
+            printf '\n[UNAVAILABLE] Command exited with status %s.\n' "$mdadm_status"
+        fi
     fi
 
     run_command \
@@ -196,14 +208,18 @@ trap 'rm -f "$TEMP_FILE"' EXIT
 
     run_shell \
         "Mounted EFI system partition contents" \
-        'if [[ -d /boot/efi/EFI ]]; then
+        'if ! mountpoint -q /boot/efi; then
+            echo "[UNAVAILABLE] /boot/efi is not mounted."
+        elif [[ ! -r /boot/efi || ! -x /boot/efi ]]; then
+            echo "[REQUIRES ROOT] /boot/efi is mounted but is not readable by the current user."
+        elif [[ -d /boot/efi/EFI ]]; then
             find /boot/efi/EFI \
                 -maxdepth 4 \
                 -type f \
                 -printf "%P\n" \
                 | sort
         else
-            echo "[UNAVAILABLE] /boot/efi/EFI is not mounted or does not exist."
+            echo "[UNAVAILABLE] /boot/efi is mounted, but the EFI directory does not exist."
         fi'
 
     run_command "Network interfaces" ip -brief address
