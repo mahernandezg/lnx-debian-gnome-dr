@@ -19,6 +19,7 @@ required_files=(
   scripts/verify.sh
   scripts/install.sh
   scripts/uninstall.sh
+  tests/backup.sh
   systemd/lnx-debian-gnome-dr.service
   systemd/lnx-debian-gnome-dr.timer
 )
