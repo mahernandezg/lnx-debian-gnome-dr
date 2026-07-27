@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Implemented read-only workstation inventory collection.
+- Added inventory dry-run support and automated tests.
 - Created the initial repository structure.
 - Defined the disaster recovery scope.
 - Added the default configuration.
